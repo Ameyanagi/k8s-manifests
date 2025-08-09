@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: torchani-staging
+
+resources:
+  - ../../base/torchani-service
+
+patchesStrategicMerge:
+  - deployment-patch.yaml
+
+configMapGenerator:
+  - name: torchani-config
+    behavior: merge
+    literals:
+      - ENVIRONMENT=staging
+      - DEBUG=true
+      - LOG_LEVEL=debug
+
+replicas:
+  - name: torchani-api
+    count: 1
+  - name: celery-worker
+    count: 1
+
+images:
+  - name: torchani-service
+    newName: ghcr.io/Ameyanagi/torchani-service
+    newTag: develop
+  - name: torchani-service-celery
+    newName: ghcr.io/Ameyanagi/torchani-service
+    newTag: develop-celery
