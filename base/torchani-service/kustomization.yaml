@@ -4,9 +4,11 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - configmap.yaml
+  - pvc.yaml
   - redis.yaml
   - service.yaml
   - deployment.yaml
+  - ingress.yaml
   - hpa.yaml
 
 commonLabels:
